@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>真実</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    #correct { display: none; color: green; font-weight: bold; }
+    #wrong { display: none; color: red; }
+  </style>
+</head>
+<body>
+  <h1>謎に答えよう！</h1>
+  <p>答えを入力してね:</p>
+  <input type="text" id="answerInput" />
+  <button id="submitBtn">送信</button>
+  
+  <div id="correct">正解だよ！</div>
+  <div id="wrong">間違いだよ！</div>
+
+  <script>
+    const correctAnswer = "apple";
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
+      if (userAnswer === correctAnswer) {
+        document.getElementById("correct").style.display = "block";
+        document.getElementById("wrong").style.display = "none";
+      } else {
+        document.getElementById("correct").style.display = "none";
+        document.getElementById("wrong").style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
