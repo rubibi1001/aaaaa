@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>謎解き</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 50px 10px;
+      font-size: 36px; 
+    }
+    #correct {
+      display: none;
+      color: red; 
+      font-weight: bold;
+      margin-top: 40px;
+    }
+    #wrong {
+      display: none;
+      color: black; 
+      margin-top: 40px;
+    }
+    #tweetLink {
+      display: none;
+      margin-top: 30px;
+    }
+    input[type="text"] {
+      font-size: 36px;
+      padding: 10px;
+      width: 80%;
+      max-width: 600px;
+    }
+    button {
+      font-size: 36px;
+      padding: 10px 30px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ルビビの試練</h1>
+  <p>答えを入力してね！！！</p>
+  <input type="text" id="answerInput" />
+  <button id="submitBtn">送信</button>
+
+  <div id="correct">正解！！！</div>
+  <div id="wrong">間違いだよ！！！</div>
+  <div id="tweetLink">
+    <a href="" id="tweetButton" target="_blank">喜びをポストする</a>
+  </div>
+
+  <script>
+    const correctAnswer = "apple";
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
+      if (userAnswer === correctAnswer) {
+        document.getElementById("correct").style.display = "block";
+        document.getElementById("wrong").style.display = "none";
+        // ツイート用リンク生成
+        const tweetText = encodeURIComponent("ルビビの試練に合格した #ルビ謎");
+        const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+        document.getElementById("tweetButton").href = tweetUrl;
+        document.getElementById("tweetLink").style.display = "block";
+      } else {
+        document.getElementById("correct").style.display = "none";
+        document.getElementById("wrong").style.display = "block";
+        document.getElementById("tweetLink").style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
