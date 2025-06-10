@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>答え合わせ</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+  input, button { font-size: 1.2em; margin: 10px; }
+  #result { margin-top: 20px; font-weight: bold; color: green; }
+</style>
+</head>
+<body>
+
+<h1>答えを入力してね！</h1>
+<input type="text" id="answer" placeholder="答えを入力" />
+<button id="submitBtn">送信</button>
+
+<div id="result"></div>
+
+<script>
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    const userInput = document.getElementById('answer').value.trim();
+    const correctAnswer = "秘密"; // ここに正解を設定！
+
+    if (userInput === correctAnswer) {
+      document.getElementById('result').textContent = "正解です！おめでとう！";
+      document.body.style.backgroundColor = "#caffbf"; // 正解時に背景色を変える
+    } else {
+      document.getElementById('result').textContent = "不正解です。もう一度試してね！";
+      document.body.style.backgroundColor = "#ffffff"; // 元に戻す
+    }
+  });
+</script>
+
+</body>
+</html>
