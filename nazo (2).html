@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>謎解き</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 50px 10px;
+      font-size: 18px; /* スマホでも見やすい文字サイズ */
+    }
+    #correct {
+      display: none;
+      color: red; /* 正解を赤に */
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    #wrong {
+      display: none;
+      color: black; /* 間違いを黒に */
+      margin-top: 20px;
+    }
+    #tweetLink {
+      display: none;
+      margin-top: 15px;
+    }
+    input[type="text"] {
+      font-size: 18px;
+      padding: 5px;
+      width: 80%;
+      max-width: 300px;
+    }
+    button {
+      font-size: 18px;
+      padding: 5px 15px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>謎に答えよう！</h1>
+  <p>答えを入力してね:</p>
+  <input type="text" id="answerInput" />
+  <button id="submitBtn">送信</button>
+
+  <div id="correct">正解だよ！</div>
+  <div id="wrong">間違いだよ！</div>
+  <div id="tweetLink">
+    <a href="" id="tweetButton" target="_blank">正解報告ツイート</a>
+  </div>
+
+  <script>
+    const correctAnswer = "apple";
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
+      if (userAnswer === correctAnswer) {
+        document.getElementById("correct").style.display = "block";
+        document.getElementById("wrong").style.display = "none";
+        // ツイート用リンク生成
+        const tweetText = encodeURIComponent("謎が解けたよ！ #謎解き");
+        const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+        document.getElementById("tweetButton").href = tweetUrl;
+        document.getElementById("tweetLink").style.display = "block";
+      } else {
+        document.getElementById("correct").style.display = "none";
+        document.getElementById("wrong").style.display = "block";
+        document.getElementById("tweetLink").style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
