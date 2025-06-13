@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>匿名チャット風掲示板</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .message-box {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    .message {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    .penname {
+      font-weight: bold;
+      color: #3366cc;
+    }
+    .timestamp {
+      font-size: 0.8em;
+      color: #888;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 10px;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #3366cc;
+      color: white;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #254a99;
+    }
+  </style>
+</head>
+<body>
+  <h1>🗨 匿名チャット掲示板</h1>
+  <div class="chat-container">
+    <div class="message-box" id="chat-log"></div>
+
+    <input type="text" id="penname" placeholder="ペンネーム（必須）" required>
+    <textarea id="message" rows="3" placeholder="メッセージを入力（必須）" required></textarea>
+    <button onclick="postMessage()">投稿</button>
+  </div>
+
+  <script>
+    function postMessage() {
+      const penname = document.getElementById('penname').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!penname || !message) {
+        alert("ペンネームとメッセージを入力してください！");
+        return;
+      }
+
+      const chatLog = document.getElementById('chat-log');
+      const timestamp = new Date().toLocaleString();
+
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message';
+      msgDiv.innerHTML = `
+        <div><span class="penname">${penname}</span> <span class="timestamp">[${timestamp}]</span></div>
+        <div>${message.replace(/\n/g, '<br>')}</div>
+      `;
+
+      chatLog.prepend(msgDiv);  // 上に追加
+      document.getElementById('message').value = '';
+    }
+  </script>
+</body>
+</html>
