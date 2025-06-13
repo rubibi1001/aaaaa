@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>匿名チャット掲示板</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #ffe4e9; /* パステルピンク */
+      padding: 30px;
+      font-size: 18px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .chat-container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    }
+    .message-box {
+      max-height: 500px;
+      overflow-y: auto;
+      margin-bottom: 30px;
+      scroll-behavior: smooth;
+    }
+    .message {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+      border-left: 6px solid #ccc;
+    }
+    .penname {
+      font-weight: bold;
+    }
+    .timestamp {
+      font-size: 0.9em;
+      color: #888;
+      margin-left: 10px;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0 15px;
+      box-sizing: border-box;
+      font-size: 1.1em;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      background: #d86b98;
+      color: white;
+      border: none;
+      font-size: 1.2em;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    button:hover {
+      background: #c05582;
+    }
+  </style>
+</head>
+<body>
+  <h1>🗨 匿名チャット掲示板</h1>
+  <div class="chat-container">
+    <div class="message-box" id="chat-log"></div>
+
+    <input type="text" id="penname" placeholder="ペンネーム（必須）" required>
+    <textarea id="message" rows="4" placeholder="メッセージを入力（必須）" required></textarea>
+    <button onclick="postMessage()">投稿</button>
+  </div>
+
+  <script>
+    function getColorFromName(name) {
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const hue = Math.abs(hash) % 360;
+      return `hsl(${hue}, 70%, 80%)`; // パステルカラー
+    }
+
+    function loadMessages() {
+      const stored = localStorage.getItem("chatMessages");
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    function saveMessages(messages) {
+      localStorage.setItem("chatMessages", JSON.stringify(messages));
+    }
+
+    function renderMessages() {
+      const chatLog = document.getElementById('chat-log');
+      chatLog.innerHTML = "";
+      const messages = loadMessages();
+
+      messages.forEach(msg => {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'message';
+        const borderColor = getColorFromName(msg.penname);
+        msgDiv.style.borderLeftColor = borderColor;
+
+        msgDiv.innerHTML = `
+          <div><span class="penname" style="color: ${borderColor};">${msg.penname}</span>
+            <span class="timestamp">[${msg.timestamp}]</span></div>
+          <div style="margin-top: 8px;">${msg.message}</div>
+        `;
+        chatLog.appendChild(msgDiv);
+      });
+
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function postMessage() {
+      const penname = document.getElementById('penname').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!penname || !message) {
+        alert("ペンネームとメッセージを入力してください！");
+        return;
+      }
+
+      const timestamp = new Date().toLocaleString();
+      const newMessage = {
+        penname: penname,
+        message: message.replace(/\n/g, '<br>'),
+        timestamp: timestamp
+      };
+
+      const messages = loadMessages();
+      messages.push(newMessage);
+      saveMessages(messages);
+      renderMessages();
+
+      document.getElementById('message').value = '';
+    }
+
+    renderMessages();
+  </script>
+</body>
+</html>
